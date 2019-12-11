@@ -289,8 +289,9 @@ Example:
   :type '(symbol))
 
 (defcustom org-msg-supported-mua '((gnus-user-agent . "gnus")
-				   (message-user-agent . "gnus")
-				   (mu4e-user-agent . "mu4e"))
+				                   (message-user-agent . "gnus")
+				                   (mu4e-user-agent . "mu4e")
+                                   (notmuch-user-agent . "notmuch"))
   "Supported Mail User Agents."
   :type '(alist :value-type string))
 
@@ -945,6 +946,12 @@ d       Delete one attachment, you will be prompted for a file name."))
   (if org-msg-mode
       (add-hook 'mu4e-compose-mode-hook 'org-msg-post-setup)
     (remove-hook 'mu4e-compose-mode-hook 'org-msg-post-setup)))
+
+(defun org-msg-mode-notmuch ()
+  "Setup the hook for notmuch mail user agent."
+  (if org-msg-mode
+      (add-hook 'notmuch-mua-reply 'org-msg-post-setup)
+    (remove-hook 'notmuch-mua-reply 'org-msg-post-setup)))
 
 (define-minor-mode org-msg-mode
   "Toggle OrgMsg mode.
